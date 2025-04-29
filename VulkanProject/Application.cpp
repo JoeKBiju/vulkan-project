@@ -1,8 +1,17 @@
 #include "Application.h"
 
+#define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+#include <glm/glm.hpp>
+
 #include <stdexcept>
 #include <array>
 #include <cassert>
+
+struct PushConstantData {
+	glm::vec2 offset;
+	alignas(16) glm::vec3 colour;		// Device (GPU) memory as 16 byte aligned for vec3, whereas in host (CPU) this isn't the default
+};
 
 Application::Application()
 {
@@ -41,12 +50,17 @@ void Application::m_LoadModel()
 
 void Application::m_CreatePipelineLayout()
 {
+	VkPushConstantRange pushConstantRange{};
+	pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+	pushConstantRange.offset = 0;
+	pushConstantRange.size = sizeof(PushConstantData);
+
 	VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
 	pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
 	pipelineLayoutInfo.setLayoutCount = 0; // Optional
 	pipelineLayoutInfo.pSetLayouts = nullptr; // Optional
-	pipelineLayoutInfo.pushConstantRangeCount = 0; // Optional
-	pipelineLayoutInfo.pPushConstantRanges = nullptr; // Optional
+	pipelineLayoutInfo.pushConstantRangeCount = 1;
+	pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
 
 	if (vkCreatePipelineLayout(m_Device.device(), &pipelineLayoutInfo, nullptr, &m_PipelineLayout) != VK_SUCCESS)
 	{
@@ -154,6 +168,9 @@ void Application::m_RecreateSwapChain()
 
 void Application::recordCommandBuffer(int imageIndex)
 {
+	static int frame = 0;
+	frame = (frame + 1) % 100;
+
 	VkCommandBufferBeginInfo beginInfo{};
 	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
@@ -171,7 +188,7 @@ void Application::recordCommandBuffer(int imageIndex)
 	renderPassInfo.renderArea.extent = m_SwapChain->getSwapChainExtent();
 
 	std::array<VkClearValue, 2> clearValues{};
-	clearValues[0].color = { 0.1f, 0.1f, 0.1f, 1.0f };
+	clearValues[0].color = { 0.01f, 0.01f, 0.01f, 1.0f };
 	clearValues[1].depthStencil = { 1.0f, 0 };
 
 	renderPassInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
@@ -192,7 +209,16 @@ void Application::recordCommandBuffer(int imageIndex)
 
 	m_Pipeline->bind(m_CommandBuffers[imageIndex]);
 	m_Model->bind(m_CommandBuffers[imageIndex]);
-	m_Model->draw(m_CommandBuffers[imageIndex]);
+
+	// Initialising push constants
+	for (int i = 0; i < 4; i++) {
+		PushConstantData push{};
+		push.offset = { -0.5f + frame * 0.02f, -0.4f + i * 0.25f };
+		push.colour = { 0.0f, 0.0f, 0.2f + 0.2f * i };
+
+		vkCmdPushConstants(m_CommandBuffers[imageIndex], m_PipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(PushConstantData), &push);
+		m_Model->draw(m_CommandBuffers[imageIndex]);
+	}
 
 	vkCmdEndRenderPass(m_CommandBuffers[imageIndex]);
 	if (vkEndCommandBuffer(m_CommandBuffers[imageIndex]) != VK_SUCCESS)
