@@ -1,0 +1,3 @@
+C:\VulkanSDK\1.4.309.0\Bin\glslc.exe "C:\Users\joebi\Documents\Projects\VulkanProject\shaders\simple_shader.vert" -o "C:\Users\joebi\Documents\Projects\VulkanProject\shaders\simple_shader.vert.spv"
+C:\VulkanSDK\1.4.309.0\Bin\glslc.exe "C:\Users\joebi\Documents\Projects\VulkanProject\shaders\simple_shader.frag" -o "C:\Users\joebi\Documents\Projects\VulkanProject\shaders\simple_shader.frag.spv"
+pause

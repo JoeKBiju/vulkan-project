@@ -1,0 +1,11 @@
+﻿  Application.cpp
+  Device.cpp
+  main.cpp
+  Pipeline.cpp
+  Window.cpp
+  Generating code
+  860 of 960 functions (89.6%) were compiled, the rest were copied from previous compilation.
+    745 functions were new in current compilation
+    25 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  VulkanProject.vcxproj -> C:\Users\joebi\Documents\Projects\VulkanProject\x64\Release\VulkanProject.exe
