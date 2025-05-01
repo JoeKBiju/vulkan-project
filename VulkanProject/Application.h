@@ -5,6 +5,7 @@
 #include "Device.h"
 #include "SwapChain.h"
 #include "Model.h"
+#include "Object.h"
 
 #include <memory>
 #include <vector>
@@ -33,9 +34,9 @@ private:
 	std::unique_ptr<Pipeline> m_Pipeline;
 	VkPipelineLayout m_PipelineLayout;
 	std::vector<VkCommandBuffer> m_CommandBuffers;
-	std::unique_ptr<Model> m_Model;
+	std::vector<Object> m_Objects;
 
-	void m_LoadModel();
+	void m_LoadObjects();
 	void m_CreatePipelineLayout();
 	void m_CreatePipeline();
 	void m_CreateCommandBuffers();
@@ -43,6 +44,7 @@ private:
 	void m_DrawFrame();
 	void m_RecreateSwapChain();
 	void recordCommandBuffer(int imageIndex);
+	void m_RenderGameObjects(VkCommandBuffer commandBuffer);
 
 	void m_Sierpinski(std::vector<Model::Vertex>& vertices, int depth, std::pair<glm::vec2, glm::vec3> left, std::pair<glm::vec2, glm::vec3> right, std::pair<glm::vec2, glm::vec3> top);
 };

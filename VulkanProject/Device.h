@@ -38,7 +38,7 @@ public:
     Device(const Device&) = delete;
     Device& operator=(const Device&) = delete;
     Device(Device&&) = delete;
-    Device&& operator=(Device&&) = delete;
+    Device& operator=(Device&&) = delete;
 
     VkCommandPool getCommandPool() { return m_CommandPool; }
     VkDevice device() { return m_Device; }

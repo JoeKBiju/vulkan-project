@@ -175,6 +175,7 @@
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="Window.h" />
