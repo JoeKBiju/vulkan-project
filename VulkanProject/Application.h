@@ -3,9 +3,9 @@
 #include "Window.h"
 #include "Pipeline.h"
 #include "Device.h"
-#include "SwapChain.h"
 #include "Model.h"
 #include "Object.h"
+#include "Renderer.h"
 
 #include <memory>
 #include <vector>
@@ -30,20 +30,14 @@ private:
 
 	Window m_Window{ WIDTH, HEIGHT, NAME };
 	Device m_Device{ m_Window };
-	std::unique_ptr <SwapChain> m_SwapChain;
+	Renderer m_Renderer{ m_Window, m_Device };
 	std::unique_ptr<Pipeline> m_Pipeline;
 	VkPipelineLayout m_PipelineLayout;
-	std::vector<VkCommandBuffer> m_CommandBuffers;
 	std::vector<Object> m_Objects;
 
 	void m_LoadObjects();
 	void m_CreatePipelineLayout();
 	void m_CreatePipeline();
-	void m_CreateCommandBuffers();
-	void m_FreeCommandBuffers();
-	void m_DrawFrame();
-	void m_RecreateSwapChain();
-	void recordCommandBuffer(int imageIndex);
 	void m_RenderGameObjects(VkCommandBuffer commandBuffer);
 
 	void m_Sierpinski(std::vector<Model::Vertex>& vertices, int depth, std::pair<glm::vec2, glm::vec3> left, std::pair<glm::vec2, glm::vec3> right, std::pair<glm::vec2, glm::vec3> top);
