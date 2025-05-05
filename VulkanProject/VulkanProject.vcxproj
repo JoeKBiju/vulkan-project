@@ -178,6 +178,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="SimpleRenderSystem.cpp" />
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -188,6 +189,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="SimpleRenderSystem.h" />
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

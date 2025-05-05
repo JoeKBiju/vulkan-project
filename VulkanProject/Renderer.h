@@ -27,8 +27,12 @@ public:
 	VkRenderPass getSwapChainRenderPass() const { return m_SwapChain->getRenderPass(); };
 	VkCommandBuffer getCurrentCommandBuffer() const { 
 		assert(m_IsFrameStarted && "Cannot get current commandbuffer when frame not in progress");
-		return m_CommandBuffers[m_CurrentImageIndex]; 
+		return m_CommandBuffers[m_CurrentFrameIndex];
 	};
+	int getFrameIndex() const {
+		assert(m_IsFrameStarted && "Cannot get get frame index when frame not in progress");
+		return m_CurrentFrameIndex;
+	}
 
 private:
 	Window& m_Window;
@@ -36,6 +40,7 @@ private:
 	std::unique_ptr <SwapChain> m_SwapChain;
 	std::vector<VkCommandBuffer> m_CommandBuffers;
 	uint32_t m_CurrentImageIndex{0};
+	int m_CurrentFrameIndex;
 	bool m_IsFrameStarted{ false };
 
 	void m_CreateCommandBuffers();

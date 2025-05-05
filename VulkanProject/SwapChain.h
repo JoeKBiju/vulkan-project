@@ -39,8 +39,15 @@ public:
     VkResult acquireNextImage(uint32_t* imageIndex);
     VkResult submitCommandBuffers(const VkCommandBuffer* buffers, uint32_t* imageIndex);
 
+    // Checks if a swapchain is compatible with a render pass
+    bool compareSwapFormats(const SwapChain& swapChain) const {
+        return swapChain.m_SwapChainDepthFormat == m_SwapChainDepthFormat &&
+            swapChain.swapChainImageFormat == swapChainImageFormat;
+    };
+
 private:
     VkFormat swapChainImageFormat;
+    VkFormat m_SwapChainDepthFormat;
     VkExtent2D swapChainExtent;
 
     std::vector<VkFramebuffer> swapChainFramebuffers;
